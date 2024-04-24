@@ -19,3 +19,13 @@ Implementing K-Means Clustering Algorithm in QT Creator for Dataset Analysis
 9. Error handling features are necessary in case of inputs or unexpected situations.
 10. For user guidance, instructions on using and interpreting results should be included in the documented app.
 ## Interface of the project
+1. Create a new QT Creator project and set up the necessary project structure.
+2. Implement a function to read and load the dataset from a file. You can use libraries like Qt's QFile for file handling.
+3. Implement the K-Means clustering algorithm in a separate function. The algorithm typically involves initializing cluster centroids, assigning data points to clusters based on proximity to centroids, updating centroids, and iterating until convergence.
+4. Create a function to visualize the dataset and clustering results using a scatter plot. You can use Qt's QGraphicsView for plotting data points and clusters.
+5. Develop a user interface that allows users to input parameters such as the number of clusters, maximum iterations, and convergence threshold.
+6. Connect the user interface elements to the corresponding functions for dataset loading, K-Means clustering, and visualization.
+7. Add error handling mechanisms to validate user inputs and handle exceptions during dataset loading or clustering.
+8. Implement functionality to save the clustering results and analysis reports to files for future reference.
+9. Test the application with sample datasets to ensure that the K-Means algorithm works correctly and the visualization accurately represents the clustering results.
+10. Document the code with comments and provide instructions on how to use the application for dataset analysis using K-Means clustering.
