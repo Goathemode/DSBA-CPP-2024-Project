@@ -5,6 +5,9 @@
 #include <string>
 #include <map>
 #include <cmath>
+#include <algorithm>
+#include <random>
+#include <limits>
 
 using namespace std;
 
@@ -38,12 +41,63 @@ bool isNumber(string str1) {
 }
 
 // Эвклидово расстояние
-double dist(vector<string> field_names1, DynamicClass obj1, DynamicClass obj2) {
+double euclideanDistance(vector<string> field_names1, DynamicClass obj1, DynamicClass obj2) {
     double sum1 = 0.0;
     for (size_t i = 0; i < field_names1.size(); i++) {
         double diff = obj1.getField(field_names1[i]) - obj2.getField(field_names1[i]);
+        sum1 += diff * diff;
     }
     return sqrt(sum1);
+}
+
+vector<DynamicClass> initializeCentroids(vector<DynamicClass>& data2, int k) {
+    vector<DynamicClass> centroids;
+    vector<DynamicClass> shuffledData = data2;
+    random_device rd;
+    default_random_engine rng(rd()); // бог знает как это работает
+    shuffle(shuffledData.begin(), shuffledData.end(), rng);
+    for (int i = 0; i < k; i++) {
+        centroids.push_back(shuffledData[i]);
+    }
+    return centroids;
+}
+
+vector<int> assignClusters(vector<string> field_names1, vector<DynamicClass>& data, vector<DynamicClass> centroids1) {
+    vector<int> clusters;
+    for (DynamicClass point : data) {
+        double minDist = numeric_limits<double>::max();
+        int closestCentroid = -1;
+        for (size_t i = 0; i < centroids1.size(); i++) {
+            double dist = euclideanDistance(field_names1, point, centroids1[i]);
+            if (dist < minDist) {
+                minDist = dist;
+                closestCentroid = i;
+            }
+        }
+        clusters.push_back(closestCentroid);
+    }
+    return clusters;
+}
+
+vector<DynamicClass> updateCentroids(vector<DynamicClass>& data, vector<int> clusters, int k) {
+    vector<DynamicClass> newCentroids(k);
+    vector<int> clusterCounts(k, 0);
+    for (int i = 0; i < k; i++) {
+        newCentroids[i].fields.clear();
+    }
+    for (size_t i = 0; i < data.size(); i++) {
+        int cluster = clusters[i];
+        for (auto [name, value] : data[i].fields) {
+            newCentroids[cluster].addField(name, value);
+        }
+        clusterCounts[cluster]++;
+    }
+    for (int i = 0; i < k; i++) {
+        for (auto [name, value] : newCentroids[i].fields) {
+            value /= clusterCounts[i];
+        }
+    }
+    return newCentroids;
 }
 
 int main() {
@@ -90,11 +144,25 @@ int main() {
         }
         line_count++;
     }
-    for (DynamicClass object1 : data1) { // дебаг вывод
-        for (string field_name : field_names) {
-            cout << object1.getField(field_name) << " ";
+
+    int k = 3;
+    int maxIterations = 100;
+    vector<DynamicClass> centroids = initializeCentroids(data1, k);
+    for (int iter = 0; iter < maxIterations; iter++) {
+        vector<int> clusters = assignClusters(field_names, data1, centroids);
+        vector<DynamicClass> newCentroids = updateCentroids(data1, clusters, k);
+        // тут нужно добавить проверку на сходимость, т.е если эта итерация не принесла значительные изменения, мы заканчиваем
+        centroids = newCentroids;
+    }
+
+    for (int i = 0; i < k; i++) {
+        cout << "Cluster: " << i << " centroid: ";
+        for (auto field : centroids[i].fields) { // дебаг вывод
+            cout << field.first << ": " << field.second << " ";
         }
         cout << '\n';
     }
+
+
     return 0;
 }
