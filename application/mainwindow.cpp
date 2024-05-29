@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include <fstream>
 #include <QFileDialog>
+//#include "kmeans.h"
+#include "cleaner.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -19,7 +21,7 @@ void MainWindow::on_pushButton_clicked()
 {
     inputFile = QFileDialog::getOpenFileName(this, "Выберите таблицу (файл формата .csv) для кластеризации", QDir::currentPath());
 
-    ui->textEdit->setText(inputFile);
+    ui->lineEdit->setText(inputFile);
 
     std::ifstream in(inputFile.toStdString());
     if (in.is_open() == false)
@@ -28,7 +30,7 @@ void MainWindow::on_pushButton_clicked()
         return ;
     }
     in.close();
-    ui->lineEdit->setText("input file is opened correctly");
+    clean(inputFile.toStdString());
 }
 
 void MainWindow::on_spinBox_valueChanged(int arg1)
