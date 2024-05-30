@@ -208,6 +208,7 @@ Makefile: ../../untitled1.pro C:/msys64/mingw64/share/qt6/mkspecs/win32-g++/qmak
 		C:/msys64/mingw64/share/qt6/mkspecs/features/qt_config.prf \
 		C:/msys64/mingw64/share/qt6/mkspecs/win32-g++/qmake.conf \
 		C:/msys64/mingw64/share/qt6/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		C:/msys64/mingw64/share/qt6/mkspecs/features/exclusive_builds.prf \
 		C:/msys64/mingw64/share/qt6/mkspecs/features/toolchain.prf \
 		C:/msys64/mingw64/share/qt6/mkspecs/features/default_pre.prf \
@@ -234,7 +235,6 @@ Makefile: ../../untitled1.pro C:/msys64/mingw64/share/qt6/mkspecs/win32-g++/qmak
 		C:/msys64/mingw64/share/qt6/mkspecs/features/lex.prf \
 		../../untitled1.pro \
 		C:/msys64/mingw64/lib/Qt6EntryPoint.prl \
-		.qmake.stash \
 		C:/msys64/mingw64/share/qt6/mkspecs/features/build_pass.prf
 	$(QMAKE) -o Makefile ..\..\untitled1.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 C:/msys64/mingw64/share/qt6/mkspecs/features/spec_pre.prf:
@@ -375,6 +375,7 @@ C:/msys64/mingw64/share/qt6/mkspecs/features/qt_functions.prf:
 C:/msys64/mingw64/share/qt6/mkspecs/features/qt_config.prf:
 C:/msys64/mingw64/share/qt6/mkspecs/win32-g++/qmake.conf:
 C:/msys64/mingw64/share/qt6/mkspecs/features/spec_post.prf:
+.qmake.stash:
 C:/msys64/mingw64/share/qt6/mkspecs/features/exclusive_builds.prf:
 C:/msys64/mingw64/share/qt6/mkspecs/features/toolchain.prf:
 C:/msys64/mingw64/share/qt6/mkspecs/features/default_pre.prf:
@@ -401,7 +402,6 @@ C:/msys64/mingw64/share/qt6/mkspecs/features/yacc.prf:
 C:/msys64/mingw64/share/qt6/mkspecs/features/lex.prf:
 ../../untitled1.pro:
 C:/msys64/mingw64/lib/Qt6EntryPoint.prl:
-.qmake.stash:
 C:/msys64/mingw64/share/qt6/mkspecs/features/build_pass.prf:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ..\..\untitled1.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
