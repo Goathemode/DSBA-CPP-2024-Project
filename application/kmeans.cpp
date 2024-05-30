@@ -175,15 +175,15 @@ pair<vector<DynamicClass>, vector<int>> k_means(vector<DynamicClass> data1, vect
     return make_pair(centroids, clusters);
 }
 
-int main2() {
-    pair<vector<DynamicClass>, vector<string>> data = readData("data2.csv");
+void cluster(int k) {
+    pair<vector<DynamicClass>, vector<string>> data = readData("cleaned_output.csv");
     vector<DynamicClass> data1 = data.first;
     vector<string> field_names = data.second;
-    pair<vector<DynamicClass>, vector<int>> result = k_means(data1, field_names, 3, 100);
+    pair<vector<DynamicClass>, vector<int>> result = k_means(data1, field_names, k, 100);
     vector<DynamicClass> centroids = result.first;
     vector<int> clusters = result.second;
-    for (int i = 0; i < 3; i++) {
-        cout << "Cluster: " << i << " centroid: ";
+    for (int i = 0; i < k; i++) {
+        cout << "Cluster: " << i + 1 << " centroid: ";
         for (auto field : centroids[i].fields) { // дебаг вывод
             cout << field.first << ": " << field.second << " ";
         }
@@ -191,5 +191,5 @@ int main2() {
     }
 
 
-    return 0;
+    return;
 }

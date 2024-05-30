@@ -149,13 +149,13 @@ void writeCSV(const std::string& filename, const std::vector<std::vector<double>
     }
 }
 
-void clean(std::string fileLocation) {
+void clean(std::string fileLocation, std::function<void(const std::string&)> output) {
     // Read data from CSV file
     std::vector<std::vector<double>> data = readCSV(fileLocation);
 
     // Check if data is empty
     if (data.empty()) {
-        std::cerr << "No data read from CSV file." << std::endl;
+        output("No data read from CSV file.");
         return;
     }
 
@@ -174,6 +174,6 @@ void clean(std::string fileLocation) {
     // Write cleaned data to a new CSV file
     writeCSV("cleaned_output.csv", data);
 
-    std::cout << "Data cleaning complete. Cleaned data saved to 'cleaned_output.csv'." << std::endl;
+    output("Data cleaning complete. Cleaned data saved to 'cleaned_output.csv'.");
     return;
 }

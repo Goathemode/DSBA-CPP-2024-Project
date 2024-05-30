@@ -22,9 +22,16 @@ private slots:
 
     void on_spinBox_valueChanged(int arg1);
 
+    void on_spinBox_textChanged(const QString &arg1);
+
+    void on_pushButton_2_clicked();
+
+    void updateListWidget(const std::string &message);
+
 private:
     Ui::MainWindow *ui;
     QString inputFile;
     QList<QList<QVariant>> data;
+    int clusterAmount;
 };
 #endif // MAINWINDOW_H

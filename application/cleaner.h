@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <functional>
 
 class DynamicClass;
 
@@ -21,6 +22,6 @@ std::pair<std::vector<DynamicClass>, std::vector<std::string>> readData(const st
 
 std::pair<std::vector<DynamicClass>, std::vector<int>> k_means(const std::vector<DynamicClass>& data1, const std::vector<std::string>& field_names, int k, int maxIterations);
 
-void clean(std::string fileLocation);
+void clean(std::string fileLocation, std::function<void(const std::string&)> output);
 
 #endif // CLEANER_H

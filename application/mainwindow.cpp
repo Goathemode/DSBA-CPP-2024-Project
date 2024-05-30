@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <fstream>
 #include <QFileDialog>
-//#include "kmeans.h"
+#include "kmeans.h"
 #include "cleaner.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -15,6 +15,11 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::updateListWidget(const std::string &message)
+{
+    ui->listWidget->addItem(QString::fromStdString(message));
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -30,11 +35,25 @@ void MainWindow::on_pushButton_clicked()
         return ;
     }
     in.close();
-    clean(inputFile.toStdString());
+    clean(inputFile.toStdString(), [this](const std::string &message){
+        updateListWidget(message);
+    });
 }
 
 void MainWindow::on_spinBox_valueChanged(int arg1)
 {
+    clusterAmount = arg1;
+}
 
+
+void MainWindow::on_spinBox_textChanged(const QString &arg1)
+{
+    clusterAmount = arg1.toInt();
+}
+
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    cluster(clusterAmount);
 }
 

@@ -21,6 +21,6 @@ std::pair<std::vector<DynamicClass>, std::vector<std::string>> readData(const st
 
 std::pair<std::vector<DynamicClass>, std::vector<int>> k_means(const std::vector<DynamicClass>& data1, const std::vector<std::string>& field_names, int k, int maxIterations);
 
-int main2();
+void cluster(int k);
 
 #endif // KMEANS_H
