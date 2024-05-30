@@ -73,13 +73,13 @@ vector<DynamicClass> initializeCentroids(const vector<DynamicClass>& data, int k
     return centroids;
 }
 
-vector<int> assignClusters(const vector<string>& field_names, const vector<DynamicClass>& data, const vector<DynamicClass>& centroids) {
+vector<int> assignClusters(const vector<string>& fieldNames, const vector<DynamicClass>& data, const vector<DynamicClass>& centroids) {
     vector<int> clusters(data.size());
     for (size_t i = 0; i < data.size(); ++i) {
         double minDist = numeric_limits<double>::max();
         int closestCentroid = -1;
         for (size_t j = 0; j < centroids.size(); ++j) {
-            double dist = euclideanDistance(field_names, data[i], centroids[j]);
+            double dist = euclideanDistance(fieldNames, data[i], centroids[j]);
             if (dist < minDist) {
                 minDist = dist;
                 closestCentroid = j;
@@ -112,7 +112,7 @@ vector<DynamicClass> updateCentroids(const vector<DynamicClass>& data, const vec
 
 pair<vector<DynamicClass>, vector<string>> readData(const string& filepath) {
     vector<DynamicClass> data;
-    vector<string> field_names;
+    vector<string> fieldNames;
     ifstream file(filepath);
     if (!file.is_open()) {
         throw runtime_error("Error opening file: " + filepath + '\n');
@@ -126,12 +126,12 @@ pair<vector<DynamicClass>, vector<string>> readData(const string& filepath) {
         int field_count = 0;
         while (getline(ss, cell, ',')) {
             if (isHeader) {
-                field_names.push_back(cell);
+                fieldNames.push_back(cell);
             } else {
                 if (cell.empty() || !isNumber(cell)) {
                     continue;
                 }
-                obj.addField(field_names[field_count], stod(cell));
+                obj.addField(fieldNames[field_count], stod(cell));
             }
             field_count++;
         }
@@ -140,21 +140,22 @@ pair<vector<DynamicClass>, vector<string>> readData(const string& filepath) {
         }
         isHeader = false;
     }
-    return make_pair(data, field_names);
+    file.close();
+    return make_pair(data, fieldNames);
 }
 
 
-pair<vector<DynamicClass>, vector<int>> k_means(const vector<DynamicClass>& data, const vector<string>& field_names, int k, int maxIterations) {
+pair<vector<DynamicClass>, vector<int>> kMeans(const vector<DynamicClass>& data, const vector<string>& fieldNames, int k, int maxIterations) {
     vector<DynamicClass> centroids = initializeCentroids(data, k);
     vector<int> clusters(data.size());
     bool converged = false;
     int iter;
     for (iter = 0; iter < maxIterations && !converged; ++iter) {
-        clusters = assignClusters(field_names, data, centroids);
+        clusters = assignClusters(fieldNames, data, centroids);
         vector<DynamicClass> newCentroids = updateCentroids(data, clusters, k);
         converged = true;
         for (int i = 0; i < k; ++i) {
-            if (euclideanDistance(field_names, centroids[i], newCentroids[i]) > 1e-4) {
+            if (euclideanDistance(fieldNames, centroids[i], newCentroids[i]) > 1e-4) {
                 converged = false;
                 break;
             }
@@ -172,7 +173,7 @@ pair<vector<DynamicClass>, vector<int>> k_means(const vector<DynamicClass>& data
 }
 
 
-double silhouetteScore(const vector<string>& field_names, const vector<DynamicClass>& data, const vector<int>& clusters, const vector<DynamicClass>& centroids) {
+double silhouetteScore(const vector<string>& fieldNames, const vector<DynamicClass>& data, const vector<int>& clusters, const vector<DynamicClass>& centroids) {
     vector<double> a(data.size()); // measures cohesion
     vector<double> b(data.size()); // measures separation
     vector<double> s(data.size()); // computes silhouette score for a particular data point
@@ -184,7 +185,7 @@ double silhouetteScore(const vector<string>& field_names, const vector<DynamicCl
         int count = 0;
         for (size_t j = 0; j < data.size(); ++j) {
             if (clusters[j] == cluster && i != j) {
-                sum += euclideanDistance(field_names, data[i], data[j]);
+                sum += euclideanDistance(fieldNames, data[i], data[j]);
                 ++count;
             }
         }
@@ -201,7 +202,7 @@ double silhouetteScore(const vector<string>& field_names, const vector<DynamicCl
                 int count = 0;
                 for (size_t k = 0; k < data.size(); ++k) {
                     if (clusters[k] == j) {
-                        dist += euclideanDistance(field_names, data[i], data[k]);
+                        dist += euclideanDistance(fieldNames, data[i], data[k]);
                         ++count;
                     }
                 }
@@ -223,14 +224,10 @@ double silhouetteScore(const vector<string>& field_names, const vector<DynamicCl
 
 
 int main() {
-    pair<vector<DynamicClass>, vector<string>> data = readData("data-1.csv");
-    vector<DynamicClass> data1 = data.first;
-    vector<string> field_names = data.second;
-    int k = 2;
+    auto [data, fieldNames] = readData("data1.csv");
+    int k = 3;
     int maxIterations = 100;
-    pair<vector<DynamicClass>, vector<int>> result = k_means(data1, field_names, k, maxIterations);
-    vector<DynamicClass> centroids = result.first;
-    vector<int> clusters = result.second;
+    auto [centroids, clusters] = kMeans(data, fieldNames, k, maxIterations);
     for (int i = 0; i < k; ++i) {
         cout << "Cluster: " << i << " centroid: ";
         for (const auto& field : centroids[i].fields) {
@@ -238,8 +235,7 @@ int main() {
         }
         cout << '\n';
     }
-    double silhouette = silhouetteScore(field_names, data1, clusters, centroids);
+    double silhouette = silhouetteScore(fieldNames, data, clusters, centroids);
     cout << "Silhouette score: " << silhouette << '\n';
-
     return 0;
 }
