@@ -62,6 +62,7 @@ double euclideanDistance(const vector<string>& field_names, const DynamicClass& 
 }
 
 vector<DynamicClass> initializeCentroids(const vector<DynamicClass>& data, int k) {
+    cout << "Clustering started...\n";
     vector<DynamicClass> centroids;
     vector<DynamicClass> shuffledData = data;
     random_device rd;
@@ -133,7 +134,6 @@ pair<vector<DynamicClass>, vector<string>> readData(const string& filepath) {
         while (getline(ss, cell, ',')) {
             if (isHeader) {
                 fieldNames.push_back(cell);
-                field_cnt++;
             } else {
                 field_cnt++;
                 if (cell.empty() || !isNumber(cell)) {
@@ -142,16 +142,20 @@ pair<vector<DynamicClass>, vector<string>> readData(const string& filepath) {
                 obj.addField(fieldNames[field_count], stod(cell));
             }
             field_count++;
-            if (field_count > 35) {
-                throw runtime_error("Error opening file: exceeded the valid column value." + '\n');
+            if (field_cnt > 35) {
+                throw runtime_error("Error opening file: exceeded the valid column value.\n");
             }
         }
         if (!isHeader) {
             data.push_back(obj);
         }
         isHeader = false;
+        if (field_count == 0) {
+            throw runtime_error("Error opening file: no valid data for computation.\n");
+        }
     }
     file.close();
+    cout << "Data is ready for clustering.\n";
     return make_pair(data, fieldNames);
 }
 
@@ -174,15 +178,15 @@ pair<vector<DynamicClass>, vector<int>> kMeans(const vector<DynamicClass>& data,
         centroids = newCentroids;
     }
     if (iter == maxIterations) {
-        cout << "Algorithm terminated after exceeding the maximum amount of iterations\n";
+        cout << "Algorithm terminated after exceeding the maximum amount of iterations.\n";
     } else if (iter % 10 == 1 && iter != 11) {
-        cout << "Algorithm terminated after centroids converged on " + to_string(iter) + "st iteration\n";
+        cout << "Algorithm terminated after centroids converged on " + to_string(iter) + "st iteration.\n";
     } else if (iter % 10 == 2 && iter != 12) {
-        cout << "Algorithm terminated after centroids converged on " + to_string(iter) + "nd iteration\n";
+        cout << "Algorithm terminated after centroids converged on " + to_string(iter) + "nd iteration.\n";
     } else if (iter % 10 == 3 && iter != 13) {
-        cout << "Algorithm terminated after centroids converged on " + to_string(iter) + "rd iteration\n";
+        cout << "Algorithm terminated after centroids converged on " + to_string(iter) + "rd iteration.\n";
     } else {
-        cout << "Algorithm terminated after centroids converged on " + to_string(iter) + "th iteration\n";
+        cout << "Algorithm terminated after centroids converged on " + to_string(iter) + "th iteration.\n";
     }
     return make_pair(centroids, clusters);
 }
@@ -192,6 +196,7 @@ double silhouetteScore(const vector<string>& fieldNames, const vector<DynamicCla
     vector<double> a(data.size()); // measures cohesion
     vector<double> b(data.size()); // measures separation
     vector<double> s(data.size()); // computes silhouette score for a particular data point
+    cout << "Computing the silhouette...\n";
 
     // compute a
     for (size_t i = 0; i < data.size(); ++i) {
@@ -239,7 +244,7 @@ double silhouetteScore(const vector<string>& fieldNames, const vector<DynamicCla
 
 
 int main() {
-    auto [data, fieldNames] = readData("data9.csv");
+    auto [data, fieldNames] = readData("data1.csv");
     int k = 3;
     int maxIterations = 100;
     auto [centroids, clusters] = kMeans(data, fieldNames, k, maxIterations);
