@@ -140,7 +140,7 @@ pair<vector<DynamicClass>, vector<string>> readData(const string& filepath) {
     while (getline(file, line)) {
         lineCount++;
         if (lineCount > 2000) {
-            throw runtime_error("Error opening file: exceeded the valid line value." + '\n');
+            throw runtime_error("File has more than 2000 lines" + '\n');
         }
         stringstream ss(line);
         string cell;
@@ -156,8 +156,8 @@ pair<vector<DynamicClass>, vector<string>> readData(const string& filepath) {
                 obj.addField(fieldNames[fieldCount], stod(cell));
             }
             fieldCount++;
-            if (fieldCount > 35) {
-                throw runtime_error("Error opening file: exceeded the valid column value.\n");
+            if (fieldNames.size() > 35) {
+                throw runtime_error("File has more than 35 fields\n");
             }
         }
         if (!isHeader) {
@@ -253,6 +253,7 @@ double silhouetteScore(const vector<string>& fieldNames, const vector<DynamicCla
     // compute s
     for (size_t i = 0; i < data.size(); ++i) {
         s[i] = (b[i] - a[i]) / max(a[i], b[i]);
+        if (isnan(s[i])) s[i] = 0.0;
         showProgressBar(static_cast<float>((2 * data.size() + i + 1) / (3.0 * data.size())));
     }
     showProgressBar(1.0);
@@ -263,7 +264,7 @@ double silhouetteScore(const vector<string>& fieldNames, const vector<DynamicCla
 
 
 int main() {
-    auto [data, fieldNames] = readData("data1.csv");
+    auto [data, fieldNames] = readData("data8.csv");
     int k = 3;
     int maxIterations = 100;
     auto [centroids, clusters] = kMeans(data, fieldNames, k, maxIterations);
