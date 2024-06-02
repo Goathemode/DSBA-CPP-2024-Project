@@ -1,10 +1,10 @@
 # DSBA-CPP-2024-Project
 
 ## The team
-+ Буш Илья 234-2
-+ Нефедов Георгий 234-2
-+ Гурьева Полина 234-2
-+ Безруков Севастьян 234-2
++ Буш Илья 234-2 (Qt application and logic and embedding all the code)
++ Нефедов Георгий 234-2 (Application design and documentation)
++ Гурьева Полина 234-2 (Finding and testing datasets, assisted in business logic)
++ Безруков Севастьян 234-2 (Head of business logic)
 ## Topic
 Implementing K-Means Clustering Algorithm in QT Creator for Dataset Analysis
 ## Requirements
