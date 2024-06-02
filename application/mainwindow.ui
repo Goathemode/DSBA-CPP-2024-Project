@@ -50,15 +50,29 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QLabel {
-    font-family: Arial;
-    font-size: 14px;
-    font-weight: bold;
-    color: blue;
-    background-color: lightgray;
-    border: 1px solid black;
-    padding: 5px;
-    margin: 10px;
+     <string notr="true">QPushButton {
+    background-color: #ffffff;
+    border: 1px solid #d3d3d3;
+    border-radius: 5px; 
+    padding: 5px 10px; 
+    margin: 2px; 
+    color: #000000; 
+    font-size: 14px; 
+}
+
+QPushButton:hover {
+    background-color: #f0f0f0; 
+    border: 1px solid #b0b0b0; 
+}
+
+QPushButton:pressed {
+    background-color: #e0e0e0; 
+}
+
+QPushButton:disabled {
+    background-color: #f0f0f0; 
+    border: 1px solid #d3d3d3; 
+    color: #a0a0a0; 
 }</string>
     </property>
     <property name="text">
@@ -76,43 +90,46 @@
     </property>
     <property name="styleSheet">
      <string notr="true">QListWidget {
-    background-color: #f0f0f0;
-    border: 2px solid #d3d3d3; 
+    background-color: #f0f0f0; 
+    border: 2px solid #d3d3d3;
     border-radius: 10px; 
     padding: 5px;
-    margin: 10px;
-    QScrollBar:vertical {
-        width: 12px;
-        background: #e0e0e0;
-        margin: 0px;
-        border-radius: 5px;
-    }
-    QScrollBar::handle:vertical {
-        background: #a0a0a0;
-        min-height: 20px;
-        border-radius: 5px;
-    }
-    QScrollBar::add-line:vertical,
-    QScrollBar::sub-line:vertical {
-        height: 0px;
-    }
+    margin: 10px; 
 }
 
 QListWidget::item {
-    background-color: #ffffff;
+    background-color: #ffffff; 
     border: 1px solid #d3d3d3; 
     border-radius: 5px;
     padding: 5px; 
-    margin: 2px;
+    margin: 2px; 
 }
 
 QListWidget::item:selected {
-    background-color: #a0c4ff; 
-    color: #ffffff; 
+    background-color: #a0c4ff; /* Light blue background for selected items */
+    color: #ffffff; /* White text for selected items */
 }
 
 QListWidget::item:hover {
-    background-color: #d3d3d3; 
+    background-color: #d3d3d3; /* Light gray background for hovered items */
+}
+
+QScrollBar:vertical {
+    width: 12px;
+    background: #e0e0e0;
+    margin: 0px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical {
+    background: #a0a0a0;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
 }
 </string>
     </property>
@@ -147,13 +164,27 @@ QListWidget::item:hover {
       <rect>
        <x>50</x>
        <y>30</y>
-       <width>249</width>
-       <height>24</height>
+       <width>251</width>
+       <height>31</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true">QLineEdit{
+	background-color: #ffffff; 
+    border: 1px solid #d3d3d3; 
+    border-radius: 5px; 
+    padding: 5px;
+    margin: 2px; 
 	qproperty-alignment: 'AlignCenter';
+}
+QLineEdit:focus {
+    background-color: #ffffff; 
+    border: 1px solid #a0c4ff; 
+}
+
+QLineEdit:hover {
+    background-color: #ffffff; 
+    border: 1px solid #b0b0b0; 
 }</string>
      </property>
      <property name="text">
@@ -165,9 +196,36 @@ QListWidget::item:hover {
       <rect>
        <x>130</x>
        <y>80</y>
-       <width>80</width>
-       <height>24</height>
+       <width>91</width>
+       <height>31</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+    background-color: #ffffff; 
+    border: 1px solid #d3d3d3; 
+    border-radius: 5px;
+    padding: 5px 10px; 
+    margin: 2px; 
+    color: #000000; 
+    font-size: 14px;
+}
+
+QPushButton:pressed {
+    background-color: #e0e0e0; 
+    border: 1px solid #a0c4ff; 
+}
+
+QPushButton:hover {
+    background-color: #f0f0f0;
+    border: 1px solid #b0b0b0; 
+}
+
+QPushButton:disabled {
+    background-color: #f0f0f0;
+    border: 1px solid #d3d3d3; 
+    color: #a0a0a0;
+}</string>
      </property>
      <property name="text">
       <string>Upload file</string>
@@ -210,29 +268,30 @@ QListWidget::item:hover {
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>40</y>
-       <width>241</width>
-       <height>51</height>
+       <x>20</x>
+       <y>50</y>
+       <width>231</width>
+       <height>41</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true">QLabel {
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    font-style: italic;
-    color: #333333;
-    background-color: #f0f0f0; 
-    border: 1px solid #cccccc; 
+    background-color: #ffffff; 
+    border: 1px solid #d3d3d3; 
     border-radius: 5px; 
-    padding: 10px; 
-    margin: 5px;
-    qproperty-alignment: 'AlignCenter';
+    padding: 5px; 
+    margin: 2px; 
+    color: #000000; 
+    font-size: 14px; 
+}
+
+QLabel:hover {
+    background-color: #f0f0f0; 
+    border: 1px solid #b0b0b0; 
 }</string>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:700;&quot;&gt;Choose amount of clusters&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Choose amount of clusters&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
     <widget class="QSpinBox" name="spinBox">
@@ -240,15 +299,42 @@ QListWidget::item:hover {
       <rect>
        <x>280</x>
        <y>50</y>
-       <width>31</width>
-       <height>25</height>
+       <width>51</width>
+       <height>41</height>
       </rect>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>31</width>
-       <height>25</height>
-      </size>
+     <property name="styleSheet">
+      <string notr="true">QSpinBox {
+    background-color: #ffffff; /* White background */
+    border: 1px solid #d3d3d3; /* Light gray border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 5px; /* Inner spacing */
+    margin: 2px; /* Outer spacing */
+    color: #000000; /* Black text */
+    font-size: 14px; /* Font size */
+}
+
+QSpinBox:hover {
+    background-color: #f0f0f0; /* Slightly lighter background when hovered */
+    border: 1px solid #b0b0b0; /* Slightly darker gray border when hovered */
+}
+
+QSpinBox::up-button, QSpinBox::down-button {
+    background-color: #ffffff; /* White background for buttons */
+    border: none; /* No border for buttons */
+    width: 16px; /* Width of the buttons */
+    height: 16px; /* Height of the buttons */
+}
+
+QSpinBox::up-button:hover, QSpinBox::down-button:hover {
+    background-color: #f0f0f0; /* Slightly lighter background for buttons when hovered */
+}
+
+QSpinBox::up-arrow, QSpinBox::down-arrow {
+    width: 7px; /* Width of the arrows */
+    height: 7px; /* Height of the arrows */
+    image: url(none); /* Use default arrow icons */
+}</string>
      </property>
     </widget>
    </widget>
