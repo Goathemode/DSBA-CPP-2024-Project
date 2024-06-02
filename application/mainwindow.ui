@@ -43,8 +43,8 @@
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>390</x>
-      <y>520</y>
+      <x>380</x>
+      <y>510</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -85,7 +85,7 @@ QPushButton:disabled {
       <x>520</x>
       <y>70</y>
       <width>281</width>
-      <height>411</height>
+      <height>391</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -455,6 +455,46 @@ QSpinBox::up-arrow, QSpinBox::down-arrow {
 </string>
      </property>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="pushButton_3">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>470</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: #ffffff; 
+    border: 1px solid #d3d3d3; 
+    border-radius: 5px;
+    padding: 5px 10px; 
+    margin: 2px; 
+    color: #000000; 
+    font-size: 14px;
+}
+
+QPushButton:pressed {
+    background-color: #e0e0e0; 
+    border: 1px solid #a0c4ff; 
+}
+
+QPushButton:hover {
+    background-color: #f0f0f0;
+    border: 1px solid #b0b0b0; 
+}
+
+QPushButton:disabled {
+    background-color: #f0f0f0;
+    border: 1px solid #d3d3d3; 
+    color: #a0a0a0;
+}</string>
+    </property>
+    <property name="text">
+     <string>Save File</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

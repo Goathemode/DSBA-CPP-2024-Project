@@ -141,7 +141,7 @@ pair<vector<DynamicClass>, vector<string>> readData(const string& filepath) {
     while (getline(file, line)) {
         lineCount++;
         if (lineCount > 2000) {
-            throw runtime_error("File has more than 2000 lines\n");
+            throw runtime_error("File has more than 2000 lines" + '\n');
         }
         stringstream ss(line);
         string cell;
@@ -170,7 +170,7 @@ pair<vector<DynamicClass>, vector<string>> readData(const string& filepath) {
         }
     }
     file.close();
-    cout << "Data is ready for clustering.\n";
+    cout << "Data is ready for clustering\n";
     return make_pair(data, fieldNames);
 }
 
@@ -254,13 +254,35 @@ double silhouetteScore(const vector<string>& fieldNames, const vector<DynamicCla
     // compute s
     for (size_t i = 0; i < data.size(); ++i) {
         s[i] = (b[i] - a[i]) / max(a[i], b[i]);
-        if (isnan(s[i])) s[i] = 0.0;
+        if (isnan(s[i])) s.erase(s.begin() + i);
         showProgressBar(static_cast<float>((2 * data.size() + i + 1) / (3.0 * data.size())));
     }
     showProgressBar(1.0);
     cout << '\n';
     double overallSilhouetteScore = accumulate(s.begin(), s.end(), 0.0) / s.size();
     return overallSilhouetteScore;
+}
+
+
+void exportData(const vector<DynamicClass>& centroids, const vector<int>& clusters, const string& filepath) {
+    ofstream file(filepath, ios::trunc);
+    if (!file.is_open()) {
+        throw runtime_error("Error opening file: " + filepath + '\n');
+    }
+    file << "Centroids:\n";
+    for (size_t i = 0; i < centroids.size(); ++i) {
+        file << "Cluster " << i << ":\n";
+        for (const auto& field : centroids[i].fields) {
+            file << field.first << ": " << field.second << '\n';
+        }
+        file << '\n';
+    }
+    file << "Clusters:\n";
+    for (size_t i = 0; i < clusters.size(); ++i) {
+        file << "Data point " << i << ": Cluster " << clusters[i] << '\n';
+    }
+    file.close();
+    cout << "Data exported successfully to " + filepath + '\n';
 }
 
 
@@ -275,5 +297,18 @@ void cluster(std::string fileLocation, int k, int maxIterations, function<void(c
     }
     double silhouette = silhouetteScore(fieldNames, data, clusters, centroids);
     output("Silhouette score: " + to_string(silhouette) + '\n');
+    exportData(centroids, clusters, "output.txt");
     return;
+}
+
+void saveFile(std::string fileLocation){
+    ifstream ini_file{"output.txt"};
+    ofstream out_file{fileLocation};
+    std::string line;
+    if (ini_file && out_file){
+        while(getline(ini_file,line)){
+            out_file << line << "\n";
+        }
+    }
+    out_file.close();
 }

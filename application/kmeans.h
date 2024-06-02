@@ -24,4 +24,6 @@ std::pair<std::vector<DynamicClass>, std::vector<int>> k_means(const std::vector
 
 void cluster(std::string fileLocation, int k, int maxIterations, std::function<void(const std::string&)> output);
 
+void saveFile(std::string fileLocation);
+
 #endif // KMEANS_H

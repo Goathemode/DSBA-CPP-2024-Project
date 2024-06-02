@@ -27,7 +27,7 @@ void MainWindow::updateListWidget(const std::string &message)
 
 void MainWindow::on_pushButton_clicked()
 {
-    inputFile = QFileDialog::getOpenFileName(this, "Выберите таблицу (файл формата .csv) для кластеризации", QDir::currentPath());
+    inputFile = QFileDialog::getOpenFileName(this, "Choose table (file format .csv) for clusterization", QDir::currentPath());
 
     std::string input = inputFile.toStdString();
     if (input != "" && (input.size() < 4 || input.substr(input.size() - 4) != ".csv")){
@@ -100,5 +100,9 @@ void MainWindow::on_spinBox_2_valueChanged(int arg1)
 }
 
 
-
+void MainWindow::on_pushButton_3_clicked()
+{
+    outputFile = QFileDialog::getSaveFileName(this, "Choose where to save file", QDir::currentPath());
+    saveFile(outputFile.toStdString());
+}
 

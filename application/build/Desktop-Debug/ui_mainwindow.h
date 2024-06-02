@@ -40,6 +40,7 @@ public:
     QFrame *frame_3;
     QLabel *label_3;
     QSpinBox *spinBox_2;
+    QPushButton *pushButton_3;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -66,7 +67,7 @@ public:
 ""));
         pushButton_2 = new QPushButton(centralwidget);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        pushButton_2->setGeometry(QRect(390, 520, 111, 41));
+        pushButton_2->setGeometry(QRect(380, 510, 111, 41));
         pushButton_2->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #ffffff;\n"
 "    border: 1px solid #d3d3d3;\n"
@@ -93,7 +94,7 @@ public:
 "}"));
         listWidget = new QListWidget(centralwidget);
         listWidget->setObjectName(QString::fromUtf8("listWidget"));
-        listWidget->setGeometry(QRect(520, 70, 281, 411));
+        listWidget->setGeometry(QRect(520, 70, 281, 391));
         listWidget->setStyleSheet(QString::fromUtf8("QListWidget {\n"
 "    background-color: #f0f0f0; \n"
 "    border: 2px solid #d3d3d3;\n"
@@ -354,6 +355,34 @@ public:
 "    height: 7px; \n"
 "}\n"
 ""));
+        pushButton_3 = new QPushButton(centralwidget);
+        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
+        pushButton_3->setGeometry(QRect(620, 470, 91, 31));
+        pushButton_3->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: #ffffff; \n"
+"    border: 1px solid #d3d3d3; \n"
+"    border-radius: 5px;\n"
+"    padding: 5px 10px; \n"
+"    margin: 2px; \n"
+"    color: #000000; \n"
+"    font-size: 14px;\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: #e0e0e0; \n"
+"    border: 1px solid #a0c4ff; \n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #f0f0f0;\n"
+"    border: 1px solid #b0b0b0; \n"
+"}\n"
+"\n"
+"QPushButton:disabled {\n"
+"    background-color: #f0f0f0;\n"
+"    border: 1px solid #d3d3d3; \n"
+"    color: #a0a0a0;\n"
+"}"));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -377,6 +406,7 @@ public:
         pushButton->setText(QCoreApplication::translate("MainWindow", "Upload file", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt;\">Choose amount of clusters</span></p></body></html>", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt;\">Choose maximum iterations</span></p></body></html>", nullptr));
+        pushButton_3->setText(QCoreApplication::translate("MainWindow", "Save File", nullptr));
     } // retranslateUi
 
 };
