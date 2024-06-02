@@ -253,7 +253,7 @@ double silhouetteScore(const vector<string>& fieldNames, const vector<DynamicCla
     // compute s
     for (size_t i = 0; i < data.size(); ++i) {
         s[i] = (b[i] - a[i]) / max(a[i], b[i]);
-        if (isnan(s[i])) s[i] = 0.0;
+        if (isnan(s[i])) s.erase(s.begin() + i);
         showProgressBar(static_cast<float>((2 * data.size() + i + 1) / (3.0 * data.size())));
     }
     showProgressBar(1.0);
