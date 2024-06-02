@@ -3,25 +3,30 @@
 
 #include <string>
 #include <vector>
-#include <map>
 #include <functional>
 
-class DynamicClass;
+// Function to handle missing values (replace with mean)
+void handleMissingValues(std::vector<std::vector<double>>& data);
 
-bool isNumber(const std::string& str1);
+// Function to remove duplicates
+void removeDuplicates(std::vector<std::vector<double>>& data);
 
-double euclideanDistance(const std::vector<std::string>& field_names1, const DynamicClass& obj1, const DynamicClass& obj2);
+// Function to normalize data (zero mean, unit variance)
+void normalizeData(std::vector<std::vector<double>>& data);
 
-std::vector<DynamicClass> initializeCentroids(std::vector<DynamicClass>& data2, int k);
+// Function to scale data to [0, 1]
+void scaleData(std::vector<std::vector<double>>& data);
 
-std::vector<int> assignClusters(const std::vector<std::string>& field_names1, const std::vector<DynamicClass>& data, const std::vector<DynamicClass>& centroids1);
+// Function to check if a string is a date
+bool isDate(const std::string& str);
 
-std::vector<DynamicClass> updateCentroids(const std::vector<DynamicClass>& data, const std::vector<int>& clusters, int k);
+// Function to read data from a CSV file and determine the number of columns dynamically
+std::vector<std::vector<double>> readCSV(const std::string& filename, std::function<void(const std::string&)> output);
 
-std::pair<std::vector<DynamicClass>, std::vector<std::string>> readData(const std::string& filepath);
+// Function to write data to a CSV file
+void writeCSV(const std::string& filename, const std::vector<std::vector<double>>& data, std::function<void(const std::string&)> output);
 
-std::pair<std::vector<DynamicClass>, std::vector<int>> k_means(const std::vector<DynamicClass>& data1, const std::vector<std::string>& field_names, int k, int maxIterations);
-
+// Function to clean the data from a CSV file
 void clean(std::string fileLocation, std::function<void(const std::string&)> output);
 
 #endif // CLEANER_H

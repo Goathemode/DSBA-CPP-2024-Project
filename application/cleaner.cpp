@@ -6,8 +6,9 @@
 #include <cmath>
 #include <limits>
 #include <set>
+#include <regex>
+#include <functional>
 #include "csv.h" // Include the CSV parser library
-
 
 // Function to handle missing values (replace with mean)
 void handleMissingValues(std::vector<std::vector<double>>& data) {
@@ -99,14 +100,20 @@ void scaleData(std::vector<std::vector<double>>& data) {
     }
 }
 
+// Function to check if a string is a date
+bool isDate(const std::string& str) {
+    std::regex datePattern("(\\d{2,4}[-/\\s]\\d{1,2}[-/\\s]\\d{1,4})|(\\d{1,2}[-/\\s]\\d{1,2}[-/\\s]\\d{2,4})");
+    return std::regex_match(str, datePattern);
+}
+
 // Function to read data from a CSV file and determine the number of columns dynamically
-std::vector<std::vector<double>> readCSV(const std::string& filename) {
+std::vector<std::vector<double>> readCSV(const std::string& filename, std::function<void(const std::string&)> output) {
     std::vector<std::vector<double>> data;
     std::ifstream inFile(filename);
     std::string line;
 
     if (!inFile) {
-        std::cerr << "Error opening file: " << filename << std::endl;
+        output("Error opening file: " + filename);
         return data;
     }
 
@@ -117,7 +124,9 @@ std::vector<std::vector<double>> readCSV(const std::string& filename) {
 
         while (std::getline(ss, value, ',')) {
             try {
-                row.push_back(std::stod(value));
+                if (!isDate(value)) {
+                    row.push_back(std::stod(value));
+                }
             } catch (const std::invalid_argument&) {
                 row.push_back(std::numeric_limits<double>::quiet_NaN());
             }
@@ -132,11 +141,11 @@ std::vector<std::vector<double>> readCSV(const std::string& filename) {
 }
 
 // Function to write data to a CSV file
-void writeCSV(const std::string& filename, const std::vector<std::vector<double>>& data) {
+void writeCSV(const std::string& filename, const std::vector<std::vector<double>>& data, std::function<void(const std::string&)> output) {
     std::ofstream outFile(filename);
 
     if (!outFile) {
-        std::cerr << "Error opening file: " << filename << std::endl;
+        output("Error opening file: " + filename);
         return;
     }
 
@@ -151,7 +160,7 @@ void writeCSV(const std::string& filename, const std::vector<std::vector<double>
 
 void clean(std::string fileLocation, std::function<void(const std::string&)> output) {
     // Read data from CSV file
-    std::vector<std::vector<double>> data = readCSV(fileLocation);
+    std::vector<std::vector<double>> data = readCSV(fileLocation, output);
 
     // Check if data is empty
     if (data.empty()) {
@@ -161,18 +170,22 @@ void clean(std::string fileLocation, std::function<void(const std::string&)> out
 
     // Handle missing values
     handleMissingValues(data);
+    output("Missing values handled.");
 
     // Remove duplicates
     removeDuplicates(data);
+    output("Duplicates removed.");
 
     // Normalize data
     normalizeData(data);
+    output("Data normalized.");
 
     // Scale data
     scaleData(data);
+    output("Data scaled.");
 
     // Write cleaned data to a new CSV file
-    writeCSV("cleaned_output.csv", data);
+    writeCSV("cleaned_output.csv", data, output);
 
     output("Data cleaning complete. Cleaned data saved to 'cleaned_output.csv'.");
     return;

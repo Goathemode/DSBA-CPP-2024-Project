@@ -9,26 +9,27 @@
 #include <random>
 #include <limits>
 #include <numeric>
+#include <functional>
 
 
 using namespace std;
 
 // Класс, отражающий data point в произвольном dataset
 class DynamicClass {
-    public:
-        map<string, double> fields;
-        
-        void addField(string name, double value) {
-            fields[name] = value;
-        }
+public:
+    map<string, double> fields;
 
-        double getField(string name) const {
-            if (fields.find(name) != fields.end()) {
-                return fields.at(name);
-            } else {
-                return 0.0;
-            }
+    void addField(string name, double value) {
+        fields[name] = value;
+    }
+
+    double getField(string name) const {
+        if (fields.find(name) != fields.end()) {
+            return fields.at(name);
+        } else {
+            return 0.0;
         }
+    }
 };
 
 // Отсеивает целые и дробные числа, затесавшиеся в string (т.к клетка файла .csv - string)
@@ -140,7 +141,7 @@ pair<vector<DynamicClass>, vector<string>> readData(const string& filepath) {
     while (getline(file, line)) {
         lineCount++;
         if (lineCount > 2000) {
-            throw runtime_error("File has more than 2000 lines" + '\n');
+            throw runtime_error("File has more than 2000 lines\n");
         }
         stringstream ss(line);
         string cell;
@@ -169,7 +170,7 @@ pair<vector<DynamicClass>, vector<string>> readData(const string& filepath) {
         }
     }
     file.close();
-    cout << "Data is ready for clustering\n";
+    cout << "Data is ready for clustering.\n";
     return make_pair(data, fieldNames);
 }
 
@@ -253,7 +254,7 @@ double silhouetteScore(const vector<string>& fieldNames, const vector<DynamicCla
     // compute s
     for (size_t i = 0; i < data.size(); ++i) {
         s[i] = (b[i] - a[i]) / max(a[i], b[i]);
-        if (isnan(s[i])) s.erase(s.begin() + i);
+        if (isnan(s[i])) s[i] = 0.0;
         showProgressBar(static_cast<float>((2 * data.size() + i + 1) / (3.0 * data.size())));
     }
     showProgressBar(1.0);
@@ -263,19 +264,16 @@ double silhouetteScore(const vector<string>& fieldNames, const vector<DynamicCla
 }
 
 
-int main() {
-    auto [data, fieldNames] = readData("data8.csv");
-    int k = 3;
-    int maxIterations = 100;
+void cluster(std::string fileLocation, int k, int maxIterations, function<void(const std::string&)> output) {
+    auto [data, fieldNames] = readData(fileLocation);
     auto [centroids, clusters] = kMeans(data, fieldNames, k, maxIterations);
     for (int i = 0; i < k; ++i) {
-        cout << "Cluster: " << i << " centroid: ";
+        output("Cluster: " + to_string(i) + " centroid: ");
         for (const auto& field : centroids[i].fields) {
-            cout << field.first << ": " << field.second << " ";
+            output(field.first + ": " + to_string(field.second) + " ");
         }
-        cout << '\n';
     }
     double silhouette = silhouetteScore(fieldNames, data, clusters, centroids);
-    cout << "Silhouette score: " << silhouette << '\n';
-    return 0;
+    output("Silhouette score: " + to_string(silhouette) + '\n');
+    return;
 }

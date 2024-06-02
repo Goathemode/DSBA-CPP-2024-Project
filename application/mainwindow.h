@@ -28,10 +28,15 @@ private slots:
 
     void updateListWidget(const std::string &message);
 
+    void on_spinBox_2_textChanged(const QString &arg1);
+
+    void on_spinBox_2_valueChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
-    QString inputFile;
+    QString inputFile = "/";
     QList<QList<QVariant>> data;
-    int clusterAmount;
+    int clusterAmount = 0;
+    int maxIterations = 0;
 };
 #endif // MAINWINDOW_H
