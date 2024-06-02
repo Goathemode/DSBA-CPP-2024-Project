@@ -169,7 +169,7 @@ pair<vector<DynamicClass>, vector<string>> readData(const string& filepath) {
         }
     }
     file.close();
-    cout << "Data is ready for clustering.\n";
+    cout << "Data is ready for clustering\n";
     return make_pair(data, fieldNames);
 }
 
