@@ -21,3 +21,4 @@ Implementing K-Means Clustering Algorithm in QT Creator for Dataset Analysis
 + Connect the user interface elements to the corresponding functions for dataset loading, K-Means clustering, and visualization.
 + Implement a widget to add error handling mechanisms that validate user inputs and handle exceptions during dataset loading or clustering.
 + Provide a documentation with comments and instructions on how to use the application.
+# Documentation
