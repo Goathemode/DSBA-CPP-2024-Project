@@ -22,3 +22,45 @@ Implementing K-Means Clustering Algorithm in QT Creator for Dataset Analysis
 + Implement a widget to add error handling mechanisms that validate user inputs and handle exceptions during dataset loading or clustering.
 + Provide a documentation with comments and instructions on how to use the application.
 # Documentation
+## Overview
+The purpose of this application is to provide a user-friendly interface for performing data clustering using the k-means algorithm. The application allows users to input datasets and configure clustering parameters. It is designed to facilitate the analysis and understanding of complex data by grouping similar data points together. Key functionalities include data import, parameter tuning, and export of clustered data.
+## Getting Started
+Before using the application, ensure that you have the following requirements in place:
++ **Data File**: A dataset in CSV format that you want to cluster.
++ **Permissions**: Ensure you have read and write permissions for the directory where the application and data files are located.
++ **Qt Creator**: A working version of Qt creator
+## Installation
+1. **Clone the Repository**:
+   - Open your terminal or command prompt.
+   - Clone the repository from GitHub (or any other source) using the following command:
+  ```
+git clone https://github.com/Goathemode/DSBA-CPP-2024-Project
+```
+2. **Import the folder into Qt creator**
+3. **Build and enjpy the experience**
+## Application features
+The k-means clustering application offers a range of features designed to simplify the process of clustering data and visualizing the results. The main features include:
+
+- Data Loading: Import datasets in CSV format.
+- Data Preprocessing: Handle missing values, normalize data, and select features for clustering.
+- Cluster Configuration: Set the number of clusters and other k-means parameters.
+- Cluster Execution: Run the k-means algorithm on the dataset.
+## Cluster Configuration
+
+- What it does: Allows you to set the number of clusters and other parameters for the k-means algorithm.
+- How to use it:
+  1. Go to the "Cluster Configuration" widgets.
+  2. Enter the number of clusters (k) you want to create.
+  3. Optionally adjust other parameters like maximum iterations.
+- Important notes or tips:
+  - Experiment with different values of k to find the optimal number of clusters.
+  - Review algorithm settings for better performance.
+## Cluster Execution
+- What it does: Runs the k-means algorithm on your preprocessed dataset.
+- How to use it:
+  1. After configuring your clusters, click the "Cluster" button.
+  2. Wait for the algorithm to process the data.
+  3. The application will display results once clustering is complete.
+- Important notes or tips:
+  - The time taken depends on dataset size and complexity.
+  - Check logs or console output for any errors during execution.
