@@ -9,6 +9,7 @@
 #include <random>
 #include <limits>
 #include <numeric>
+#include <functional>
 
 
 using namespace std;

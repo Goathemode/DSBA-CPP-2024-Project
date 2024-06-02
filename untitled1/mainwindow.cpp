@@ -3,7 +3,6 @@
 #include <fstream>
 #include <QFileDialog>
 #include "kmeans.h"
-#include "cleaner.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -47,9 +46,6 @@ void MainWindow::on_pushButton_clicked()
         return ;
     }
     in.close();
-    //clean(inputFile.toStdString(), [this](const std::string &message){
-    //    updateListWidget(message);
-    //});
 }
 
 void MainWindow::on_spinBox_valueChanged(int arg1)
