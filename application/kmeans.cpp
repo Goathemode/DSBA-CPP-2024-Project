@@ -52,6 +52,20 @@ bool isNumber(const string& str1) {
 }
 
 
+void showProgressBar(double progress) {
+    int barWidth = 70;
+    cout << "[";
+    int pos = barWidth * progress;
+    for (int i = 0; i < barWidth; ++i) {
+        if (i < pos) cout << "=";
+        else if (i == pos) cout << ">";
+        else cout << " ";
+    }
+    cout << "]" << int(progress * 100.0) << " %\r";
+    cout.flush();
+}
+
+
 double euclideanDistance(const vector<string>& field_names, const DynamicClass& obj1, const DynamicClass& obj2) {
     double sum = 0.0;
     for (const auto& field_name : field_names) {
@@ -62,6 +76,7 @@ double euclideanDistance(const vector<string>& field_names, const DynamicClass& 
 }
 
 vector<DynamicClass> initializeCentroids(const vector<DynamicClass>& data, int k) {
+    cout << "Clustering started...\n";
     vector<DynamicClass> centroids;
     vector<DynamicClass> shuffledData = data;
     random_device rd;
@@ -116,14 +131,21 @@ pair<vector<DynamicClass>, vector<string>> readData(const string& filepath) {
     ifstream file(filepath);
     if (!file.is_open()) {
         throw runtime_error("Error opening file: " + filepath + '\n');
+    } else {
+        cout << "File " + filepath + " opened succesfully\n";
     }
     string line;
     bool isHeader = true;
+    int lineCount = 0;
     while (getline(file, line)) {
+        lineCount++;
+        if (lineCount > 2000) {
+            throw runtime_error("File has more than 2000 lines" + '\n');
+        }
         stringstream ss(line);
         string cell;
         DynamicClass obj;
-        int field_count = 0;
+        int fieldCount = 0;
         while (getline(ss, cell, ',')) {
             if (isHeader) {
                 fieldNames.push_back(cell);
@@ -131,16 +153,23 @@ pair<vector<DynamicClass>, vector<string>> readData(const string& filepath) {
                 if (cell.empty() || !isNumber(cell)) {
                     continue;
                 }
-                obj.addField(fieldNames[field_count], stod(cell));
+                obj.addField(fieldNames[fieldCount], stod(cell));
             }
-            field_count++;
+            fieldCount++;
+            if (fieldNames.size() > 35) {
+                throw runtime_error("File has more than 35 fields\n");
+            }
         }
         if (!isHeader) {
             data.push_back(obj);
         }
         isHeader = false;
+        if (fieldCount == 0) {
+            throw runtime_error("Error opening file: no valid data for computation.\n");
+        }
     }
     file.close();
+    cout << "Data is ready for clustering\n";
     return make_pair(data, fieldNames);
 }
 
@@ -163,11 +192,15 @@ pair<vector<DynamicClass>, vector<int>> kMeans(const vector<DynamicClass>& data,
         centroids = newCentroids;
     }
     if (iter == maxIterations) {
-        cout << "Algorithm terminated after exceeding the maximum amount of iterations\n";
-    } else if (iter == 2 || iter == 3) {
-        cout << "Algorithm terminated after centroids converged on " + to_string(iter) + "rd iteration\n";
+        cout << "Algorithm terminated after exceeding the maximum amount of iterations.\n";
+    } else if (iter % 10 == 1 && iter != 11) {
+        cout << "Algorithm terminated after centroids converged on " + to_string(iter) + "st iteration.\n";
+    } else if (iter % 10 == 2 && iter != 12) {
+        cout << "Algorithm terminated after centroids converged on " + to_string(iter) + "nd iteration.\n";
+    } else if (iter % 10 == 3 && iter != 13) {
+        cout << "Algorithm terminated after centroids converged on " + to_string(iter) + "rd iteration.\n";
     } else {
-        cout << "Algorithm terminated after centroids converged on " + to_string(iter) + "th iteration\n";
+        cout << "Algorithm terminated after centroids converged on " + to_string(iter) + "th iteration.\n";
     }
     return make_pair(centroids, clusters);
 }
@@ -177,6 +210,7 @@ double silhouetteScore(const vector<string>& fieldNames, const vector<DynamicCla
     vector<double> a(data.size()); // measures cohesion
     vector<double> b(data.size()); // measures separation
     vector<double> s(data.size()); // computes silhouette score for a particular data point
+    cout << "Computing the silhouette...\n";
 
     // compute a
     for (size_t i = 0; i < data.size(); ++i) {
@@ -190,6 +224,7 @@ double silhouetteScore(const vector<string>& fieldNames, const vector<DynamicCla
             }
         }
         a[i] = sum / count;
+        showProgressBar(static_cast<float>((i + 1) / (3.0 * data.size())));
     }
 
     // compute b
@@ -212,19 +247,24 @@ double silhouetteScore(const vector<string>& fieldNames, const vector<DynamicCla
             }
         }
         b[i] = minDist;
+        showProgressBar(static_cast<float>((data.size() + i + 1) / (3.0 * data.size())));
     }
 
     // compute s
     for (size_t i = 0; i < data.size(); ++i) {
         s[i] = (b[i] - a[i]) / max(a[i], b[i]);
+        if (isnan(s[i])) s.erase(s.begin() + i);
+        showProgressBar(static_cast<float>((2 * data.size() + i + 1) / (3.0 * data.size())));
     }
+    showProgressBar(1.0);
+    cout << '\n';
     double overallSilhouetteScore = accumulate(s.begin(), s.end(), 0.0) / s.size();
     return overallSilhouetteScore;
 }
 
 
 int main() {
-    auto [data, fieldNames] = readData("data1.csv");
+    auto [data, fieldNames] = readData("data8.csv");
     int k = 3;
     int maxIterations = 100;
     auto [centroids, clusters] = kMeans(data, fieldNames, k, maxIterations);
